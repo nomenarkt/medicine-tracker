@@ -96,7 +96,9 @@ func (c *Client) PollForCommands(fetchData func() ([]domain.Medicine, []domain.S
 			continue
 		}
 		body, _ := io.ReadAll(resp.Body)
-		resp.Body.Close()
+		if err := resp.Body.Close(); err != nil {
+			log.Println("Telegram response close error:", err)
+		}
 
 		var updates GetUpdatesResponse
 		if err := json.Unmarshal(body, &updates); err != nil {

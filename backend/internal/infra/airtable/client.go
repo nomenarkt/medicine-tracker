@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -41,7 +42,11 @@ func (c *Client) FetchMedicines() ([]domain.Medicine, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if cerr := res.Body.Close(); cerr != nil {
+			log.Println("airtable response close error:", cerr)
+		}
+	}()
 
 	body, _ := io.ReadAll(res.Body)
 
@@ -78,7 +83,11 @@ func (c *Client) FetchStockEntries() ([]domain.StockEntry, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if cerr := res.Body.Close(); cerr != nil {
+			log.Println("airtable response close error:", cerr)
+		}
+	}()
 
 	body, _ := io.ReadAll(res.Body)
 
@@ -127,7 +136,11 @@ func (c *Client) CreateStockEntry(entry domain.StockEntry) error {
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if cerr := res.Body.Close(); cerr != nil {
+			log.Println("airtable response close error:", cerr)
+		}
+	}()
 
 	if res.StatusCode >= 300 {
 		b, _ := io.ReadAll(res.Body)
@@ -160,7 +173,11 @@ func (c *Client) UpdateForecastDate(medicineID string, forecastDate, updatedAt t
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if cerr := res.Body.Close(); cerr != nil {
+			log.Println("airtable response close error:", cerr)
+		}
+	}()
 
 	if res.StatusCode >= 300 {
 		b, _ := io.ReadAll(res.Body)
@@ -192,7 +209,11 @@ func (c *Client) UpdateLastAlertedDate(medicineID string, date time.Time) error 
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if cerr := res.Body.Close(); cerr != nil {
+			log.Println("airtable response close error:", cerr)
+		}
+	}()
 
 	if res.StatusCode >= 300 {
 		b, _ := io.ReadAll(res.Body)
