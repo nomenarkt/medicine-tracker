@@ -99,8 +99,12 @@ func (c *Client) PollForCommands(fetchData func() ([]domain.Medicine, []domain.S
 		resp.Body.Close()
 
 		var updates GetUpdatesResponse
-		if err := json.Unmarshal(body, &updates); err != nil || !updates.OK {
+		if err := json.Unmarshal(body, &updates); err != nil {
 			log.Println("Failed to decode Telegram updates:", err)
+			continue
+		}
+		if !updates.OK {
+			log.Printf("Telegram API error status %d: %s", resp.StatusCode, string(body))
 			continue
 		}
 
