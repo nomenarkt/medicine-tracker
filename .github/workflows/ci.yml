@@ -15,6 +15,7 @@ jobs:
       TELEGRAM_CHAT_ID: dummy
       ENABLE_ENTRY_POST: false
       ENABLE_ALERT_TICKER: false
+      ENABLE_TELEGRAM_POLLING: false
 
     defaults:
       run:

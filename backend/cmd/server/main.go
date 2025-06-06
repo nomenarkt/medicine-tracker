@@ -38,18 +38,20 @@ func main() {
 		background.StartStockAlertTicker(telegram.HandleOutOfStockCommand, tickerInterval)
 	}
 
-	// 🧭 Start Telegram bot polling for `/stock` commands
-	go deps.Telegram.PollForCommands(func() ([]domain.Medicine, []domain.StockEntry, error) {
-		meds, err := deps.Airtable.FetchMedicines()
-		if err != nil {
-			return nil, nil, err
-		}
-		entries, err := deps.Airtable.FetchStockEntries()
-		if err != nil {
-			return nil, nil, err
-		}
-		return meds, entries, nil
-	})
+    // 🧭 Start Telegram bot polling for `/stock` commands if enabled
+    if os.Getenv("ENABLE_TELEGRAM_POLLING") == "true" {
+            go deps.Telegram.PollForCommands(func() ([]domain.Medicine, []domain.StockEntry, error) {
+                    meds, err := deps.Airtable.FetchMedicines()
+                    if err != nil {
+                            return nil, nil, err
+                    }
+                    entries, err := deps.Airtable.FetchStockEntries()
+                    if err != nil {
+                            return nil, nil, err
+                    }
+                    return meds, entries, nil
+            })
+    }
 
 	// 🚀 Run server
 	log.Fatal(app.Listen(":8787"))
