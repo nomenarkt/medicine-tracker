@@ -116,8 +116,8 @@ The `/stock` command uses `CurrentStockAt()` and shows dynamic forecast:
 *Out-of-Stock Forecast*
 
 ```text
-MedA                  → 2025-06-10 (12 left)
-MedB                  → 2025-06-15 (28 left)
+MedA                  → 2025-06-10 (12.00 left)
+MedB                  → 2025-06-15 (28.00 left)
 ```
 ```
 

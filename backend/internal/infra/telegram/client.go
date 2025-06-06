@@ -124,15 +124,15 @@ func (c *Client) handleStockCommand(chatID int64, fetchData func() ([]domain.Med
 	type Row struct {
 		Name  string
 		Date  time.Time
-		Pills int
+		Pills float64
 	}
 	var rows []Row
 	for _, m := range meds {
-		stock := int(stockcalc.CurrentStockAt(m, entries, now))
+		stock := stockcalc.CurrentStockAt(m, entries, now)
 		if stock <= 0 || m.DailyDose == 0 {
 			continue
 		}
-		date := stockcalc.OutOfStockDateAt(m, float64(stock), now)
+		date := stockcalc.OutOfStockDateAt(m, stock, now)
 		rows = append(rows, Row{m.Name, date, stock})
 	}
 
@@ -142,7 +142,7 @@ func (c *Client) handleStockCommand(chatID int64, fetchData func() ([]domain.Med
 
 	var lines []string
 	for _, r := range rows {
-		lines = append(lines, fmt.Sprintf("%-22s → %s (%2d left)", r.Name, r.Date.Format("2006-01-02"), r.Pills))
+		lines = append(lines, fmt.Sprintf("%-22s → %s (%.2f left)", r.Name, r.Date.Format("2006-01-02"), r.Pills))
 	}
 
 	msg := "*Out-of-Stock Forecast*\n\n```text\n" + strings.Join(lines, "\n") + "\n```"
