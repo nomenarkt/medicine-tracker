@@ -39,7 +39,7 @@ This stack enables lean infrastructure with real-time automation and friendly UX
 
 ## 🔧 Configuration
 
-Create a `.env` file in `backend/` (based on `.env.template`):
+Copy `backend/.env.template` to `backend/.env` and fill in your credentials:
 
 ```env
 AIRTABLE_BASE_ID=
