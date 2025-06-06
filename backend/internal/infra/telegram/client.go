@@ -154,10 +154,15 @@ func (c *Client) handleStockCommand(chatID int64, fetchData func() ([]domain.Med
 }
 
 func (c *Client) sendTo(chatID int64, msg string) error {
+	escaped := msg
+	if !strings.Contains(msg, "```") {
+		escaped = util.EscapeMarkdown(msg)
+	}
+
 	payload := url.Values{}
 	payload.Set("chat_id", fmt.Sprintf("%d", chatID))
-	payload.Set("text", msg)
-	payload.Set("parse_mode", "Markdown")
+	payload.Set("text", escaped)
+	payload.Set("parse_mode", "MarkdownV2")
 
 	_, err := http.PostForm(
 		"https://api.telegram.org/bot"+c.Token+"/sendMessage",
