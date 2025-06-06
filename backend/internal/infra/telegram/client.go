@@ -2,6 +2,7 @@ package telegram
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -82,12 +83,17 @@ type GetUpdatesResponse struct {
 	Result []Update `json:"result"`
 }
 
-func (c *Client) PollForCommands(fetchData func() ([]domain.Medicine, []domain.StockEntry, error)) {
+func (c *Client) PollForCommands(ctx context.Context, fetchData func() ([]domain.Medicine, []domain.StockEntry, error)) {
 	var lastUpdateID int
 
 	log.Println("📨 Telegram polling started...")
 	for {
-		time.Sleep(2 * time.Second)
+		select {
+		case <-ctx.Done():
+			return
+		default:
+			time.Sleep(2 * time.Second)
+		}
 
 		apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/getUpdates?timeout=10&offset=%d", c.Token, lastUpdateID+1)
 		resp, err := http.Get(apiURL)

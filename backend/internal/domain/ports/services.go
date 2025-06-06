@@ -1,6 +1,7 @@
 package ports
 
 import (
+	"context"
 	"time"
 
 	"github.com/nomenarkt/medicine-tracker/backend/internal/domain"
@@ -14,7 +15,7 @@ type AirtableService interface {
 
 type TelegramService interface {
 	SendTelegramMessage(text string) error
-	PollForCommands(fetch func() ([]domain.Medicine, []domain.StockEntry, error))
+	PollForCommands(ctx context.Context, fetch func() ([]domain.Medicine, []domain.StockEntry, error))
 }
 
 type StockDataPort interface {

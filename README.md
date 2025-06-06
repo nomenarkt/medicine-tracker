@@ -141,6 +141,7 @@ internal/
 - All Telegram messages are MarkdownV2-safe.
 - Refill notifications and alerts are **idempotent**.
 - `LastAlertedDate` ensures alerts are not duplicated.
+- Telegram polling shuts down cleanly when the server context is cancelled (e.g. Ctrl+C).
 
 ## License
 

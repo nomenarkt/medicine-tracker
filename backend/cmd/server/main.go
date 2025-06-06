@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"time"
@@ -17,6 +18,9 @@ import (
 func main() {
 	_ = godotenv.Load()
 	app := fiber.New()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	// ⛓️ Resolve dependencies via central initializer
 	deps := di.Init()
@@ -39,7 +43,7 @@ func main() {
 	}
 
 	// 🧭 Start Telegram bot polling for `/stock` commands
-	go deps.Telegram.PollForCommands(func() ([]domain.Medicine, []domain.StockEntry, error) {
+	go deps.Telegram.PollForCommands(ctx, func() ([]domain.Medicine, []domain.StockEntry, error) {
 		meds, err := deps.Airtable.FetchMedicines()
 		if err != nil {
 			return nil, nil, err

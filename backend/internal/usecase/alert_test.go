@@ -1,6 +1,7 @@
 package usecase_test
 
 import (
+	"context"
 	"strings"
 	"testing"
 	"time"
@@ -33,7 +34,7 @@ func (m *mockTelegram) SendTelegramMessage(msg string) error {
 	return nil
 }
 
-func (m *mockTelegram) PollForCommands(fetchData func() ([]domain.Medicine, []domain.StockEntry, error)) {
+func (m *mockTelegram) PollForCommands(ctx context.Context, fetchData func() ([]domain.Medicine, []domain.StockEntry, error)) {
 	// no-op
 }
 
