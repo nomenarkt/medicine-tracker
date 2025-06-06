@@ -35,7 +35,7 @@ func GenerateOutOfStockForecastMessage(
 
 		shouldUpdate := true
 		if m.ForecastOutOfStockDate != nil {
-			saved := m.ForecastOutOfStockDate.Time.UTC().Format("2006-01-02")
+			saved := m.ForecastOutOfStockDate.UTC().Format("2006-01-02")
 			computed := forecastDate.Format("2006-01-02")
 			if saved == computed {
 				shouldUpdate = false

@@ -48,7 +48,7 @@ func (s *StockChecker) CheckAndAlertLowStock() error {
 		log.Printf("🔍 %s: stock=%.2f, forecast=%s, daysLeft=%d", m.Name, stock, forecastDate.Format("2006-01-02"), daysLeft)
 
 		if daysLeft <= 10 {
-			if m.LastAlertedDate != nil && m.LastAlertedDate.Time.Format("2006-01-02") == now.Format("2006-01-02") {
+			if m.LastAlertedDate != nil && m.LastAlertedDate.Format("2006-01-02") == now.Format("2006-01-02") {
 				log.Printf("ℹ️ Already alerted for %s today, skipping.", m.Name)
 				continue
 			}
