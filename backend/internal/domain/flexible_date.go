@@ -37,7 +37,7 @@ func (fd *FlexibleDate) UnmarshalJSON(b []byte) error {
 
 // MarshalJSON ensures we always serialize in "2006-01-02" format
 func (fd FlexibleDate) MarshalJSON() ([]byte, error) {
-	return json.Marshal(fd.Time.Format("2006-01-02"))
+	return json.Marshal(fd.Format("2006-01-02"))
 }
 
 // IsZero allows comparison and validation

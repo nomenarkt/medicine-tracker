@@ -58,7 +58,11 @@ func (c *Client) SendTelegramMessage(msg string) error {
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if cerr := res.Body.Close(); cerr != nil {
+			log.Println("telegram response close error:", cerr)
+		}
+	}()
 
 	if res.StatusCode >= 300 {
 		return fmt.Errorf("telegram error status: %d", res.StatusCode)
@@ -96,7 +100,9 @@ func (c *Client) PollForCommands(fetchData func() ([]domain.Medicine, []domain.S
 			continue
 		}
 		body, _ := io.ReadAll(resp.Body)
-		resp.Body.Close()
+		if err := resp.Body.Close(); err != nil {
+			log.Println("Telegram response close error:", err)
+		}
 
 		var updates GetUpdatesResponse
 		if err := json.Unmarshal(body, &updates); err != nil {
