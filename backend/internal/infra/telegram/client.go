@@ -18,6 +18,7 @@ import (
 
 	"github.com/nomenarkt/medicine-tracker/backend/internal/domain"
 	"github.com/nomenarkt/medicine-tracker/backend/internal/logic/stockcalc"
+	"github.com/nomenarkt/medicine-tracker/backend/internal/util"
 )
 
 type Client struct {
@@ -38,7 +39,7 @@ func (c *Client) SendTelegramMessage(msg string) error {
 
 	escaped := msg
 	if !strings.Contains(msg, "```") {
-		escaped = escapeMarkdown(msg)
+		escaped = util.EscapeMarkdown(msg)
 	}
 
 	payload := map[string]string{
@@ -64,21 +65,6 @@ func (c *Client) SendTelegramMessage(msg string) error {
 	}
 
 	return nil
-}
-
-func escapeMarkdown(text string) string {
-	replacer := strings.NewReplacer(
-		"_", "\\_",
-		"*", "\\*",
-		"[", "\\[",
-		"]", "\\]",
-		"(", "\\(",
-		")", "\\)",
-		"`", "\\`",
-		".", "\\.",
-		"-", "\\-",
-	)
-	return replacer.Replace(text)
 }
 
 type Update struct {

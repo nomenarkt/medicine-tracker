@@ -10,6 +10,7 @@ import (
 	"github.com/nomenarkt/medicine-tracker/backend/internal/domain/ports"
 	"github.com/nomenarkt/medicine-tracker/backend/internal/logic/forecast"
 	"github.com/nomenarkt/medicine-tracker/backend/internal/logic/stockcalc"
+	"github.com/nomenarkt/medicine-tracker/backend/internal/util"
 )
 
 // StockChecker handles alerting when stock is near depletion.
@@ -54,7 +55,7 @@ func (s *StockChecker) CheckAndAlertLowStock() error {
 
 			alert := fmt.Sprintf(
 				"*%s* will run out in %d day(s)\\!\nRefill before *%s*\nCurrently: *%.2f* pills left\\.",
-				escapeMarkdown(m.Name),
+				util.EscapeMarkdown(m.Name),
 				daysLeft,
 				forecastDate.Format("2006-01-02"),
 				stock,
@@ -98,14 +99,14 @@ func (s *StockChecker) CheckAndAlertLowStock() error {
 			lines = append(lines,
 				fmt.Sprintf("• %d %s on %s",
 					e.Quantity,
-					escapeMarkdown(e.Unit),
+					util.EscapeMarkdown(e.Unit),
 					e.Date.Format("2006-01-02")),
 			)
 		}
 
 		msg := fmt.Sprintf(
 			"*Refill recorded for %s*\\:\n%s",
-			escapeMarkdown(med.Name),
+			util.EscapeMarkdown(med.Name),
 			strings.Join(lines, "\n"),
 		)
 
@@ -117,23 +118,6 @@ func (s *StockChecker) CheckAndAlertLowStock() error {
 		}
 	}
 	return nil
-}
-
-// escapeMarkdown prepares strings for MarkdownV2 safe output
-func escapeMarkdown(text string) string {
-	replacer := strings.NewReplacer(
-		"_", "\\_",
-		"*", "\\*",
-		"[", "\\[",
-		"]", "\\]",
-		"(", "\\(",
-		")", "\\)",
-		"`", "\\`",
-		".", "\\.",
-		"-", "\\-",
-		"!", "\\!",
-	)
-	return replacer.Replace(text)
 }
 
 // OutOfStockService wraps forecast generation logic.
