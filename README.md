@@ -142,4 +142,8 @@ internal/
 - Refill notifications and alerts are **idempotent**.
 - `LastAlertedDate` ensures alerts are not duplicated.
 
+## License
+
+Released under the [MIT License](LICENSE).
+
 ---
