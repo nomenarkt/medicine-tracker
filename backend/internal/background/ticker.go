@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func StartStockAlertTicker(handler func() error) {
+func StartStockAlertTicker(handler func() error, interval time.Duration) {
 	go func() {
 		for {
 			log.Println("⏰ Checking stock for Telegram alerts...")
@@ -14,7 +14,7 @@ func StartStockAlertTicker(handler func() error) {
 			} else {
 				log.Println("✅ Stock alert check completed.")
 			}
-			time.Sleep(24 * time.Hour) //test: 1 * time.Minute
+			time.Sleep(interval)
 		}
 	}()
 }
