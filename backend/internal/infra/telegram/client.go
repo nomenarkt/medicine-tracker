@@ -126,7 +126,9 @@ func (c *Client) PollForCommands(fetchData func() ([]domain.Medicine, []domain.S
 func (c *Client) handleStockCommand(chatID int64, fetchData func() ([]domain.Medicine, []domain.StockEntry, error)) {
 	meds, entries, err := fetchData()
 	if err != nil {
-		_ = c.sendTo(chatID, "\u26a0\ufe0f Failed to fetch stock data.")
+		if err := c.sendTo(chatID, "\u26a0\ufe0f Failed to fetch stock data."); err != nil {
+			log.Println("failed to send /stock response:", err)
+		}
 		return
 	}
 
@@ -156,7 +158,9 @@ func (c *Client) handleStockCommand(chatID int64, fetchData func() ([]domain.Med
 	}
 
 	msg := "*Out-of-Stock Forecast*\n\n```text\n" + strings.Join(lines, "\n") + "\n```"
-	_ = c.sendTo(chatID, msg)
+	if err := c.sendTo(chatID, msg); err != nil {
+		log.Println("failed to send /stock response:", err)
+	}
 }
 
 func (c *Client) sendTo(chatID int64, msg string) error {
