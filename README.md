@@ -36,6 +36,31 @@ Our stack is optimized for simplicity, cost-efficiency, and real-time alerting.
 This stack enables lean infrastructure with real-time automation and friendly UX — ideal for side projects, MVPs, and internal tools.
 
 ---
+## Airtable Integration
+
+Our Airtable base uses two tables:
+
+### Medicines
+- `id`
+- `name`
+- `unit_type`
+- `unit_per_box`
+- `daily_dose`
+- `start_date`
+- `initial_stock`
+- `forecast_last_updated`
+- `forecast_out_of_stock_date`
+- `last_alerted_date`
+- link to Stock Entries
+
+### Stock Entries
+- `id`
+- `date`
+- `quantity`
+- `unit`
+- `medicine_id`
+
+The Airtable API token is supplied via the `AIRTABLE_TOKEN` environment variable. Never commit secrets to version control.
 
 ## 🔧 Configuration
 
