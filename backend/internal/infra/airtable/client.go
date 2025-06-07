@@ -18,6 +18,15 @@ type Client struct{}
 
 func NewClient() *Client {
 	_ = godotenv.Load()
+
+	// Validate required environment variables to avoid runtime errors
+	if os.Getenv("AIRTABLE_BASE_ID") == "" ||
+		os.Getenv("AIRTABLE_MEDICINES_TABLE") == "" ||
+		os.Getenv("AIRTABLE_ENTRIES_TABLE") == "" ||
+		os.Getenv("AIRTABLE_TOKEN") == "" {
+		log.Fatal("missing Airtable configuration: ensure AIRTABLE_BASE_ID, AIRTABLE_MEDICINES_TABLE, AIRTABLE_ENTRIES_TABLE and AIRTABLE_TOKEN are set")
+	}
+
 	return &Client{}
 }
 

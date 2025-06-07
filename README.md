@@ -53,6 +53,9 @@ ENABLE_ALERT_TICKER=false
 ENABLE_TELEGRAM_POLLING=false
 ```
 
+If any required environment variable is missing, the backend exits with a fatal
+error during client initialization, ensuring misconfigurations are caught early.
+
 ---
 
 ## 📦 Alerting & Notifications

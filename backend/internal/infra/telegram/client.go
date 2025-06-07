@@ -28,9 +28,16 @@ type Client struct {
 
 func NewClient() *Client {
 	_ = godotenv.Load()
+
+	token := os.Getenv("TELEGRAM_BOT_TOKEN")
+	chatID := os.Getenv("TELEGRAM_CHAT_ID")
+	if token == "" || chatID == "" {
+		log.Fatal("missing Telegram configuration: TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set")
+	}
+
 	return &Client{
-		Token:  os.Getenv("TELEGRAM_BOT_TOKEN"),
-		ChatID: os.Getenv("TELEGRAM_CHAT_ID"),
+		Token:  token,
+		ChatID: chatID,
 	}
 }
 
