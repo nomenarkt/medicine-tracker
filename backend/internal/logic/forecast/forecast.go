@@ -2,6 +2,7 @@ package forecast
 
 import (
 	"fmt"
+	"log"
 	"sort"
 	"time"
 
@@ -61,9 +62,9 @@ func GenerateOutOfStockForecastMessage(
 		if f.ShouldUpdate && repo != nil {
 			err := repo.UpdateForecastDate(f.ID, f.ForecastDate, now)
 			if err != nil {
-				fmt.Printf("❌ Failed to update forecast for %s: %v\n", f.Name, err)
+				log.Printf("❌ Failed to update forecast for %s: %v", f.Name, err)
 			} else {
-				fmt.Printf("🆗 Updated forecast for %s to %s\n", f.Name, f.ForecastDate.Format("2006-01-02"))
+				log.Printf("🆗 Updated forecast for %s to %s", f.Name, f.ForecastDate.Format("2006-01-02"))
 			}
 		}
 		rows = append(rows, fmt.Sprintf("%-22s → %s", f.Name, f.ForecastDate.Format("2006-01-02")))
